@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Περι… Bachelor 🌿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-50:   #E6F1FB;
+      --blue-100:  #B5D4F4;
+      --blue-300:  #85B7EB;
+      --blue-500:  #378ADD;
+      --blue-700:  #185FA5;
+      --blue-900:  #042C53;
+      --green-50:  #EAF3DE;
+      --green-100: #C0DD97;
+      --green-300: #97C459;
+      --green-500: #639922;
+      --green-700: #3B6D11;
+      --green-900: #173404;
+      --text-primary:   #1a1a1a;
+      --text-secondary: #555;
+      --border:    #b5d4f4;
+      --bg:        #fff;
+      --bg-subtle: #f0f6ff;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--blue-50) 0%, var(--green-50) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1rem; height: 52px;
+    }
+    .navbar-brand { font-size: 0.9rem; font-weight: 600; color: var(--blue-700); }
+
+    .burger {
+      width: 40px; height: 40px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      border-radius: 8px; transition: background .15s;
+    }
+    .burger:hover { background: var(--blue-50); }
+    .burger span {
+      display: block; width: 20px; height: 1.5px;
+      background: var(--blue-700); border-radius: 2px;
+      transition: transform .25s, opacity .2s;
+    }
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* DRAWER */
+    .drawer {
+      position: fixed; top: 52px; right: 0; bottom: 0;
+      width: 220px; background: var(--bg);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      z-index: 99; padding: 0.75rem 0;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-backdrop {
+      display: none; position: fixed; inset: 52px 0 0 0;
+      background: rgba(0,0,0,.2); z-index: 98;
+    }
+    .drawer-backdrop.open { display: block; }
+    .drawer-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.9rem 1.25rem;
+      font-size: 0.95rem; color: var(--text-primary);
+      cursor: pointer; border: none; background: none;
+      width: 100%; text-align: left; font-family: inherit;
+      transition: background .12s;
+    }
+    .drawer-item:hover { background: var(--blue-50); }
+    .drawer-item.active { color: var(--blue-700); font-weight: 500; background: var(--blue-50); }
+
+    /* HERO COVER */
+    .hero-cover {
+      width: 100%; max-width: 640px; margin: 0 auto;
+      aspect-ratio: 1 / 0.75;
+      background: url('https://www.travelgo.gr/sites/default/files/styles/cover_image_688_442/public/imported/articles/2020-09/nafplio_shutterstock.jpg?itok=dQg03kT1') center/cover no-repeat;
+      position: relative;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+
+    .hero-content {
+      text-align: center; padding: 1.5rem 1.25rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.98) 20%, var(--bg) 100%);
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 7vw, 2.2rem);
+      font-weight: 600; color: var(--blue-900); margin-bottom: 0.25rem;
+    }
+
+    /* PILLS */
+    .pills {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      justify-content: center; padding: 1rem;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .pill {
+      background: linear-gradient(135deg, var(--blue-50), var(--green-50));
+      border: 1px solid var(--border);
+      border-radius: 50px; padding: 5px 13px;
+      font-size: 0.78rem; color: var(--blue-700);
+    }
+
+    /* CONTENT */
+    .content { max-width: 640px; margin: 0 auto; padding: 1.25rem 1rem 4rem; }
+    .pane { display: none; }
+    .pane.active { display: block; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 1.75rem; }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 0.55rem; top: 0.75rem; bottom: 0.75rem;
+      width: 2px; background: var(--blue-300); border-radius: 2px;
+    }
+    .event { position: relative; margin-bottom: 0.875rem; }
+    .event::before {
+      content: ''; position: absolute;
+      left: -1.275rem; top: 1rem;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--blue-500);
+      border: 2.5px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--blue-300);
+    }
+    .event-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.8rem 0.9rem;
+    }
+    .event-time {
+      font-size: 0.7rem; font-weight: 600;
+      color: var(--blue-500); letter-spacing: .05em;
+      text-transform: uppercase; margin-bottom: 0.2rem;
+    }
+    .event-title {
+      font-size: 0.93rem; font-weight: 500;
+      color: var(--text-primary); line-height: 1.4; margin-bottom: 0.15rem;
+    }
+    .event-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.25rem; }
+    .event-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+    .event-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.74rem; color: var(--blue-700);
+      text-decoration: none;
+      background: var(--blue-50); border: 1px solid var(--border);
+      border-radius: 50px; padding: 3px 10px; transition: background .12s;
+    }
+    .event-link:hover { background: var(--blue-100); }
+
+    /* PHOTOS */
+    .gallery { columns: 2; gap: 8px; }
+    @media (min-width: 480px) { .gallery { columns: 3; } }
+    .gallery img {
+      width: 100%; break-inside: avoid; display: block;
+      border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border);
+    }
+
+    /* INFO */
+    .info-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .info-card + .info-card { margin-top: 0.75rem; }
+    .info-card h3 { font-size: 0.875rem; font-weight: 600; color: var(--blue-700); margin-bottom: 0.7rem; }
+    .info-card p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65; }
+    .info-row {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+      padding: 7px 0; border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row .label { font-size: 0.81rem; color: var(--text-secondary); }
+    .info-row .val { font-size: 0.84rem; font-weight: 500; color: var(--text-primary); text-align: right; }
+
+    footer { text-align: center; font-size: 0.73rem; color: #7899c4; padding: 1.5rem 1rem 2.5rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="navbar-brand">Περι… Bachelor</span>
+    <button class="burger" id="burger" aria-label="Μενού" aria-expanded="false" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="drawer-backdrop" id="backdrop" onclick="closeMenu()"></div>
+  <div class="drawer" id="drawer">
+    <button class="drawer-item active" id="di-program" onclick="showTab('program')">📋 Πρόγραμμα</button>
+    <button class="drawer-item" id="di-photos" onclick="showTab('photos')">📸 Φωτογραφίες</button>
+    <button class="drawer-item" id="di-info" onclick="showTab('info')">ℹ️ Πληροφορίες</button>
+  </div>
+
+  <div class="hero-cover">
+    <div class="hero-content">
+      <h1>Περι… Bachelor</h1>
+    </div>
+  </div>
+
+  <div class="pills">
+    <div class="pill">📅 18 Ιουνίου 2026</div>
+    <div class="pill">📍 Ναύπλιο</div>
+    <div class="pill">🕗 Αναχώρηση 09:00</div>
+  </div>
+
+  <div class="content">
+
+    <div id="pane-program" class="pane active">
+      <div class="timeline">
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">08:30 – 09:00</div>
+            <div class="event-title">🚗 Αναχώρηση από Αθήνα</div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">10:00 – 10:45</div>
+            <div class="event-title">☕ Στάση για καφέ και συστάσεις στον Ισθμό</div>
+            <div class="event-desc">Μιας και σίγουρα θα χρειαζόμαστε κάποιον καφέ/πρωινό και μιας και δε γνωριζόμαστε και όλοι μεταξύ μας, θα κάνουμε μια στάση στα Ίσθμια, που είναι όμορφα και στη μέση της διαδρομής, πριν ξεκινήσουμε τη μέρα.</div>
+            <div class="event-links">
+              <a class="event-link" href="https://maps.app.goo.gl/KRZiHVTPiDdxAuMe9" target="_blank" rel="noopener">📍 Χάρτης</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">12:00 – 13:30</div>
+            <div class="event-title">🥃 Τσίπουρο & Ούζο Τουρ · Αποστακτήριο Καρώνης</div>
+            <div class="event-desc">Η Περάκο μας αγαπάει το καλό, ποιοτικό αλκοόλι από τις μικρές, αυθεντικές ζυθοποιίες και αποστακτήρια. Θα επισκεφθούμε λοιπόν ένα από τα πιο ιστορικά αποστακτήρια της περιοχής, όπου θα μάθουμε τα μυστικά της απόσταξης, θα μας ξεναγήσουν στο μουσείο τους και στο αποστακτήριο και θα κάνουμε και γευστική δοκιμή (Τιμή: 10-15 ευρώ/άτομο)</div>
+            <div class="event-links">
+              <a class="event-link" href="https://www.karonis.gr/" target="_blank" rel="noopener">🌐 karonis.gr</a>
+              <a class="event-link" href="https://maps.app.goo.gl/baToGdTpMWXHVZDg9" target="_blank" rel="noopener">📍 Χάρτης</a>
+              <a class="event-link" href="KARONIS DISTILLERY FLYER 2026.pdf" target="_blank" rel="noopener">📄 FLYER</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">13:30 – 14:30</div>
+            <div class="event-title">🚶 Βόλτα & Chill στην Παλιά Πόλη </div>
+            <div class="event-desc">Παρκάρισμα στο λιμάνι και χαλαρή βόλτα στα σοκάκια της παλιάς πόλης.</div>
+            <div class="event-links">
+              <a class="event-link" href="https://maps.app.goo.gl/FrRF2eb9appkr9WK7" target="_blank" rel="noopener">📍 Χάρτης</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">14:30 – 16:30</div>
+            <div class="event-title">🍴 Lunch Time</div>
+            <div class="event-desc">Κλασικό παραδοσιακό, μαγειρευτό ή ψητό μέσα στην παλιά πόλη. TBD!</div>   
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">16:30 – 19:00</div>
+            <div class="event-title">🏖️ Απογευματινός Καφές / Μπύρες / Βουτιά</div>
+            <div class="event-desc">Πιο φλέξιμπολ πρόγραμμα εδώ. Ίσως άραγμα στην παραλία Καραθόνα (ή κάπου αλλού) - καφές, μπύρα, μπλα μπλα, και όποιος θέλει ρίχνει και μια βουτιά. Εννοείται ανάλογα τον καιρό ή τα πλάνα μας, αυτό μπορεί να αλλάξει και να αράξουμε στην πόλη, στο λιμάνι ή να πάμε και πάνω στο κάστρο. Ό,τι ψηφίσουμε. </div>
+            <div class="event-links">
+              <a class="event-link" href="https://maps.app.goo.gl/c6L8N7gkfvQxYAr76" target="_blank" rel="noopener">📍 Χάρτης</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">19:30 – 20:30</div>
+            <div class="event-title">⚽ Football Time! (5x5)</div>
+            <div class="event-desc">Το Περακάκι μας (εκτός από το καλό αλκοόλι) αγαπάει και ΤΗ ΜΠΑΛΑ. Οπότε ΠΡΟΦΑΝΩΣ και θα πάμε για 5x5!</div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">20:30 – 22:00</div>
+            <div class="event-title">🥐 Last Walk / Drinks</div>
+            <div class="event-desc">Τελευταία βόλτα ή μπύρα ή ΚΡΕΠΑ στην πόλη. Ό,τι πει ο λαός.</div>
+          </div>
+        </div>
+
+        <div class="event">
+          <div class="event-card">
+            <div class="event-time">22:00 – 23:00</div>
+            <div class="event-title">🛣️ Αναχώρηση για Αθήνα</div>
+            <div class="event-desc">Ο καθένας σπίτι του και τα λέμε την επόμενη στο γλέντι!</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="pane-photos" class="pane">
+      <div style="margin-bottom: 1.5rem;">
+        <a href="https://drive.google.com/drive/folders/1d1-b6hHa8pEkUnSsInl2iGHumyAK_c8t?usp=sharing" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #378ADD, #639922); color: white; padding: 0.75rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: opacity .12s;">
+          ☁️ Προσθέστε τις δικές σας φωτογραφίες
+        </a>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">Ανεβάστε τις φωτογραφίες σας από την εκδρομή ώστε να τις έχει η Πέρυ.</p>
+      </div>
+      <div class="gallery">
+        <img src="photos/photo1.jpg" alt="Φωτογραφία 1" />
+        <img src="photos/photo2.jpg" alt="Φωτογραφία 2" />
+        <img src="photos/photo3.jpg" alt="Φωτογραφία 3" />
+        <img src="photos/photo4.jpg" alt="Φωτογραφία 4" />
+        <img src="photos/photo5.jpg" alt="Φωτογραφία 5" />
+        <img src="photos/photo6.jpg" alt="Φωτογραφία 6" />
+      </div>
+    </div>
+
+    <div id="pane-info" class="pane">
+
+      <div class="info-card">
+        <h3>🚗 Μεταφορά</h3>
+        <div class="info-row">
+          <span class="label">Κόστος / αυτοκίνητο (μετ' επιστροφής) Βενζίνη + διόδια (+Αττική Οδός)</span>
+          <span class="val">~60€</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Με 4 άτομα / αυτοκίνητο</span>
+          <span class="val">~15€/άτομο</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>🥃 Αποστακτήριο Καρώνης</h3>
+        <p>Θα δοκιμάσουμε 3-5 spirits (ούζο, τσίπουρο, μαστίχα, brandy etc.) αναλόγως πιο πακέτο θα διαλέξουμε.<br>Τιμή: 10–15€/άτομο ανάλογα με το πακέτο.</p>
+          <div class="event-links">
+            <a class="event-link" href="KARONIS DISTILLERY FLYER 2026.pdf" target="_blank" rel="noopener">📄 FLYER</a>
+          </div>
+      </div>
+
+      <div class="info-card">
+        <h3>🍴 Γεύμα</h3>
+        <p>TBD! Αν ξέρεις κάτι καλό στο Ναύπλιο, πες το!</p>
+      </div>
+
+      <div class="info-card">
+        <h3> ⚽ 5x5</h3>
+        <p>Εννοείται πως θα είναι κάτι πολύ χαλαρό, για μισή με μία ώρα, ίσα ίσα για να βγάλουμε κάποιες φωτογραφίες, να κλωτσήσουμε λίγο το τόπι, έτσι για τη φάση. Οπότε παρότι μπορεί κάποιος να μη θέλει να παίξει, θα πρότεινα να φέρετε κάποια αθλητικά παπούτσια και μια εμφάνιση κάποιας ομάδας ώστε να έχουμε υλικό για φωτοσούτινγκ.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>🎒 Τι άλλο να φέρεις</h3>
+        <p>Μαγιό (αν θες βουτιά), άνετα παπούτσια για βόλτα, και καλή διάθεση.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>made with 💚 for Peri</footer>
+
+  <script>
+    function toggleMenu() {
+      var open = document.getElementById('drawer').classList.toggle('open');
+      document.getElementById('backdrop').classList.toggle('open', open);
+      document.getElementById('burger').classList.toggle('open', open);
+      document.getElementById('burger').setAttribute('aria-expanded', String(open));
+    }
+    function closeMenu() {
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('backdrop').classList.remove('open');
+      document.getElementById('burger').classList.remove('open');
+      document.getElementById('burger').setAttribute('aria-expanded', 'false');
+    }
+    function showTab(id) {
+      document.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+      document.querySelectorAll('.drawer-item').forEach(function(b){ b.classList.remove('active'); });
+      document.getElementById('pane-' + id).classList.add('active');
+      document.getElementById('di-' + id).classList.add('active');
+      closeMenu();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+  </script>
+
+</body>
+</html>
