@@ -45,7 +45,11 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 1rem; height: 52px;
     }
-    .navbar-brand { font-size: 0.9rem; font-weight: 600; color: var(--blue-700); }
+    .navbar-brand {
+      font-size: 0.9rem; font-weight: 600; color: var(--blue-700);
+      cursor: pointer; transition: opacity .2s;
+    }
+    .navbar-brand:hover { opacity: 0.7; }
 
     .burger {
       width: 40px; height: 40px;
@@ -108,7 +112,9 @@
     .hero h1 {
       font-size: clamp(1.8rem, 7vw, 2.2rem);
       font-weight: 600; color: var(--blue-900); margin-bottom: 0.25rem;
+      cursor: pointer; transition: opacity .2s;
     }
+    .hero h1:hover { opacity: 0.7; }
 
     /* PILLS */
     .pills {
@@ -127,6 +133,29 @@
     .content { max-width: 640px; margin: 0 auto; padding: 1.25rem 1rem 4rem; }
     .pane { display: none; }
     .pane.active { display: block; }
+
+    /* WELCOME TEXT */
+    .welcome-text {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .welcome-text h2 {
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--blue-700); margin-bottom: 0.75rem;
+    }
+    .welcome-text p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* HOME GALLERY (couple photos) */
+    .home-gallery { display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr); }
+    .home-gallery img {
+      width: 100%; display: block;
+      border-radius: 8px; border: 1px solid var(--border);
+    }
 
     /* TIMELINE */
     .timeline { position: relative; padding-left: 1.75rem; }
@@ -198,7 +227,7 @@
 <body>
 
   <nav class="navbar">
-    <span class="navbar-brand">Περι… Bachelor</span>
+    <span class="navbar-brand" onclick="showTab('home')">Περι… Bachelor</span>
     <button class="burger" id="burger" aria-label="Μενού" aria-expanded="false" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -206,14 +235,16 @@
 
   <div class="drawer-backdrop" id="backdrop" onclick="closeMenu()"></div>
   <div class="drawer" id="drawer">
-    <button class="drawer-item active" id="di-program" onclick="showTab('program')">📋 Πρόγραμμα</button>
+    <button class="drawer-item active" id="di-home" onclick="showTab('home')">🏠 Home</button>
+    <button class="drawer-item" id="di-program" onclick="showTab('program')">📋 Πρόγραμμα</button>
     <button class="drawer-item" id="di-photos" onclick="showTab('photos')">📸 Φωτογραφίες</button>
     <button class="drawer-item" id="di-info" onclick="showTab('info')">ℹ️ Πληροφορίες</button>
   </div>
 
+  <!-- HERO COVER - ALWAYS VISIBLE -->
   <div class="hero-cover">
     <div class="hero-content">
-      <h1>Περι… Bachelor</h1>
+      <h1 onclick="showTab('home')">Περι… Bachelor</h1>
     </div>
   </div>
 
@@ -225,7 +256,21 @@
 
   <div class="content">
 
-    <div id="pane-program" class="pane active">
+    <!-- HOME -->
+    <div id="pane-home" class="pane active">
+      <div class="welcome-text">
+        <h2>Καλώς ήρθατε!</h2>
+        <p>Σας καλώ σε μια αξέχαστη μέρα γεμάτη δράση, διασκέδαση και δυνατές στιγμές! Από το πρωί στον Ισθμό ως το βράδυ στο Ναύπλιο, έχουμε σχεδιάσει τα πάντα για εσάς. Ετοιμαθείτε για ούζο, μπάλα, παραλία και φωτογραφίες που θα θυμόμαστε για πάντα! 🌿</p>
+      </div>
+
+      <div class="home-gallery">
+        <img src="couple/photo1.jpg" alt="Couple photo 1" />
+        <img src="couple/photo2.jpg" alt="Couple photo 2" />
+      </div>
+    </div>
+
+    <!-- PROGRAMME -->
+    <div id="pane-program" class="pane">
       <div class="timeline">
 
         <div class="event">
@@ -239,7 +284,7 @@
           <div class="event-card">
             <div class="event-time">10:00 – 10:45</div>
             <div class="event-title">☕ Στάση για καφέ και συστάσεις στον Ισθμό</div>
-            <div class="event-desc">Μιας και σίγουρα θα χρειαζόμαστε κάποιον καφέ/πρωινό και μιας και δε γνωριζόμαστε και όλοι μεταξύ μας, θα κάνουμε μια στάση στα Ίσθμια, που είναι όμορφα και στη μέση της διαδρομής, πριν ξεκινήσουμε τη μέρα.</div>
+            <div class="event-desc">Μιας και σίγουρα θα χρειαζόμαστε κάποιον καφέ/πρωινό και μιας και δε γνωριζόμαστε και όλοι μεταξύ μας, θα κάνουμε μια στάση στα Ίσθμια, που είναι στη μέση της διαδρομής και όμορφα, πριν ξεκινήσουμε τη μέρα.</div>
             <div class="event-links">
               <a class="event-link" href="https://maps.app.goo.gl/KRZiHVTPiDdxAuMe9" target="_blank" rel="noopener">📍 Χάρτης</a>
             </div>
@@ -250,7 +295,7 @@
           <div class="event-card">
             <div class="event-time">12:00 – 13:30</div>
             <div class="event-title">🥃 Τσίπουρο & Ούζο Τουρ · Αποστακτήριο Καρώνης</div>
-            <div class="event-desc">Η Περάκο μας αγαπάει το καλό, ποιοτικό αλκοόλι από τις μικρές, αυθεντικές ζυθοποιίες και αποστακτήρια. Θα επισκεφθούμε λοιπόν ένα από τα πιο ιστορικά αποστακτήρια της περιοχής, όπου θα μάθουμε τα μυστικά της απόσταξης, θα μας ξεναγήσουν στο μουσείο τους και στο αποστακτήριο και θα κάνουμε και γευστική δοκιμή (Τιμή: 10-15 ευρώ/άτομο)</div>
+            <div class="event-desc">Η Περάκο μας αγαπάει το καλό, ποιοτικό αλκοόλι και αγαπάει πιο πολύ τις μικρές, αυθεντικές ζυθοποιίες και αποστακτήρια. Θα επισκεφθούμε λοιπόν ένα από τα πιο ιστορικά αποστακτήρια της περιοχής, όπου θα μάθουμε τα μυστικά της απόσταξης, θα μας ξεναγήσουν στο μουσείο τους και στο αποστακτήριο και θα κάνουμε και γευστική δοκιμή (Τιμή: 10-15 ευρώ/άτομο)</div>
             <div class="event-links">
               <a class="event-link" href="https://www.karonis.gr/" target="_blank" rel="noopener">🌐 karonis.gr</a>
               <a class="event-link" href="https://maps.app.goo.gl/baToGdTpMWXHVZDg9" target="_blank" rel="noopener">📍 Χάρτης</a>
@@ -316,12 +361,13 @@
       </div>
     </div>
 
+    <!-- PHOTOS -->
     <div id="pane-photos" class="pane">
       <div style="margin-bottom: 1.5rem;">
         <a href="https://drive.google.com/drive/folders/1d1-b6hHa8pEkUnSsInl2iGHumyAK_c8t?usp=sharing" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #378ADD, #639922); color: white; padding: 0.75rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: opacity .12s;">
-          ☁️ Προσθέστε τις δικές σας φωτογραφίες
+          ☁️ Πρόσθεσε δικές σου φωτογραφίες
         </a>
-        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">Ανεβάστε τις φωτογραφίες σας από την εκδρομή ώστε να τις έχει η Πέρυ.</p>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">Όλοι μπορούν να ανεβάσουν φωτογραφίες από την εκδρομή εδώ</p>
       </div>
       <div class="gallery">
         <img src="photos/photo1.jpg" alt="Φωτογραφία 1" />
@@ -333,6 +379,7 @@
       </div>
     </div>
 
+    <!-- INFO -->
     <div id="pane-info" class="pane">
 
       <div class="info-card">
@@ -350,9 +397,6 @@
       <div class="info-card">
         <h3>🥃 Αποστακτήριο Καρώνης</h3>
         <p>Θα δοκιμάσουμε 3-5 spirits (ούζο, τσίπουρο, μαστίχα, brandy etc.) αναλόγως πιο πακέτο θα διαλέξουμε.<br>Τιμή: 10–15€/άτομο ανάλογα με το πακέτο.</p>
-          <div class="event-links">
-            <a class="event-link" href="KARONIS DISTILLERY FLYER 2026.pdf" target="_blank" rel="noopener">📄 FLYER</a>
-          </div>
       </div>
 
       <div class="info-card">
