@@ -26,18 +26,3 @@ Settings → Pages → Source: **Deploy from a branch** → Branch: **main** →
 
 Σε 1-2 λεπτά το site θα είναι στο:  
 `https://[username].github.io/peri-bachelor/`
-
-## Πώς να προσθέσεις φωτογραφίες
-
-Μετά την εκδρομή, βάλε τις φωτογραφίες στον φάκελο `photos/` και στο `index.html` βρες το `<div id="gallery">` και άντικατέστησε το περιεχόμενό του με:
-
-```html
-<div class="gallery">
-  <img src="photos/photo1.jpg" alt="Ισθμός" />
-  <img src="photos/photo2.jpg" alt="Αποστακτήριο" />
-  <img src="photos/photo3.jpg" alt="Ναύπλιο" />
-  <!-- κ.ο.κ. -->
-</div>
-```
-
-Το gallery κάνει αυτόματα masonry layout με 2-3 columns!
